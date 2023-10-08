@@ -1,6 +1,5 @@
-import { on } from "events";
-
-import Expo, {
+import {
+  Expo,
   ExpoPushErrorReceipt,
   ExpoPushMessage,
   ExpoPushSuccessTicket,
@@ -18,19 +17,6 @@ export const sendNotifications = async (messages: ExpoPushMessage[]) => {
     }),
   ).then((tickets) => tickets.flat());
 };
-
-// export const handleTickets = (tickets: ExpoPushTicket[]) => {
-//   const successTickets = tickets.filter((ticket) => {
-//     if (ticket.status === "error") {
-//       console.error(
-//         `There was an error sending a notification: ${ticket.message}`,
-//         JSON.stringify(ticket.details),
-//       );
-//     }
-//     return ticket.status === "ok";
-//   }) as ExpoPushSuccessTicket[];
-//   return successTickets.map((ticket) => ticket.id);
-// };
 
 type ErrorTicketHandlers = {
   onPushTicketError: (ticket: ExpoPushErrorReceipt) => void;
@@ -62,7 +48,7 @@ export const handleTickets = async (
         onReceiptError(receiptId, receipt);
       });
     } catch (error) {
-      onGetReceiptError(error);
+      onGetReceiptError(error as Error);
     }
   });
 };

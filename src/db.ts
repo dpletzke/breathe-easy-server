@@ -1,8 +1,8 @@
 import { config } from "dotenv";
 import { Db as DbType, MongoClient } from "mongodb";
 
-import { requestStation } from "./apiUtils";
-import { StationType, UserDataType } from "./types";
+import { requestStation } from "./apiUtils.js";
+import { StationType, UserDataType } from "./types.js";
 
 config();
 
@@ -51,11 +51,11 @@ export const requestStationAndUpsert = async (
   const stationResponse = await requestStation(stationId);
   const dataToUpsert = {
     stationId,
-    aqi:stationResponse.data.aqi === "-" ? 0 : stationResponse.data.aqi;,
+    aqi: stationResponse.data.aqi === "-" ? 0 : stationResponse.data.aqi,
     lastUpdated: stationResponse.data.time.iso,
     name: stationResponse.data.city.name,
     shortName: stationResponse.data.city.name.split(",")[0],
-  }
+  };
   const upsertStationResponse = await upsertStation(db, dataToUpsert);
   return { ...dataToUpsert, upsertStationResponse };
 };

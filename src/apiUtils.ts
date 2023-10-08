@@ -1,9 +1,11 @@
+import { fetch } from "undici";
+
 import type {
   Error1Response,
   Error2Response,
   StationResponse,
   StationsLookupResponse,
-} from "./types";
+} from "./types.js";
 
 type ResponseType =
   | StationResponse
@@ -27,10 +29,10 @@ const stationsApiBaseUrl = "https://api.waqi.info";
 export const requestStation = async (
   stationId: string,
 ): Promise<StationResponse> => {
-  const urlStationLookup = `${stationsApiBaseUrl}/feed/@${stationId}/?token=${process.env.EXPO_PUBLIC_API_TOKEN}`;
+  const urlStationLookup = `${stationsApiBaseUrl}/feed/@${stationId}/?token=${process.env.AQI_API_TOKEN}`;
 
   const response = await fetch(urlStationLookup);
-  const json = await response.json();
+  const json = (await response.json()) as ResponseType;
   assertSuccess<StationResponse>(json);
   return json;
 };
